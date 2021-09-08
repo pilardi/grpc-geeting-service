@@ -1,0 +1,63 @@
+# see https://kuber.bwcom.io/
+# see https://www.freecodecamp.org/news/what-is-a-helm-chart-tutorial-for-kubernetes-beginners/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-geeting-service
+  labels:
+    app: grpc-geeting-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-geeting-service
+  template:
+    metadata:
+      labels:
+        app: grpc-geeting-service
+    spec:
+      containers: 
+      - name: grpc-geeting-service
+        image: org.geetingservice/grpc-geeting-service-server:LOCAL-SNAPSHOT
+        env:
+        - name: grpc.server.port
+          value: "8080"
+        ports:
+        - name: grpc
+          containerPort: 8080
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8080", "-service=org.geetingservice.GreetingService"]
+          initialDelaySeconds: 5
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8080"]
+          initialDelaySeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-geeting-service
+spec:
+  externalName: grpc-geeting-service
+  selector:
+    app: grpc-geeting-service
+  ports:
+   - protocol: TCP
+     port: 8080
+     targetPort: grpc
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grpc-geeting-service
+spec:
+  defaultBackend:
+    service:
+      name: grpc-geeting-service
+      port:
+        number: 8080
