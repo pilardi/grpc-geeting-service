@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.autoconfigure.GrpcClientAutoConfiguration;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.autoconfigure.GrpcHealthServiceAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcServerAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration;
 
@@ -36,6 +37,7 @@ public class GreetingServiceImplGrpcTest {
     @ImportAutoConfiguration({
         GrpcServerAutoConfiguration.class, // Create required server beans
         GrpcServerFactoryAutoConfiguration.class, // Select server implementation
+        GrpcHealthServiceAutoConfiguration.class,
         GrpcClientAutoConfiguration.class}) // Support @GrpcClient annotation
     public static class Config {
         
