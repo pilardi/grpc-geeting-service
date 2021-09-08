@@ -1,0 +1,29 @@
+# Eclipse
+/bin
+.settings
+.classpath
+.project
+.recommenders
+.metadata
+
+# Maven
+target/
+
+# JRebel
+rebel.xml
+
+# Intellij Idea
+*.iml
+.idea/
+*/atlassian-ide-plugin.xml
+out/
+
+# VSCode
+.vscode
+.factorypath
+
+# NPM
+npm-debug.log
+
+# Other
+*.DS_Store
